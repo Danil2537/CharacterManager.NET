@@ -1,0 +1,931 @@
+﻿<UserControl x:Class="CharacterManager.Views.Creator"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CharacterManager.Views" xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:global="clr-namespace:CharacterManager"
+             xmlns:models="clr-namespace:CharacterManager.Models" 
+             mc:Ignorable="d" 
+             HorizontalAlignment="Stretch" VerticalAlignment="Stretch"   >
+    <UserControl.Resources >
+        <!-- ObjectDataProvider to get the enum values -->
+        <ObjectDataProvider x:Key="SkillsEnumValues" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="models:Skill"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <!--<ObjectDataProvider x:Key="ToolsEnumValues" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="global:Tools"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>-->
+        <ObjectDataProvider x:Key="LanguagesEnumValues" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="models:Language"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <BooleanToVisibilityConverter x:Key="convVisibility"/>
+
+
+        <!-- Стиль для Label -->
+        <Style TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Papyrus"/>
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="Foreground" Value="NavajoWhite"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Margin" Value="0 15"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="ClipToBounds" Value="False"/>
+            <Setter Property="MaxWidth" Value="1200"/>
+        </Style>
+
+        <!-- Стиль для TextBox -->
+        <Style TargetType="TextBox">
+            <Setter Property="FontFamily" Value="Papyrus"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="DimGray"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="Width" Value="300"/>
+        </Style>
+
+        <!-- Стиль для Button -->
+        <Style TargetType="Button">
+            <Setter Property="FontFamily" Value="Papyrus"/>
+            <Setter Property="FontSize" Value="22"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Background" Value="#4E4A47"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Width" Value="110"/>
+            <Setter Property="BorderBrush" Value="Goldenrod"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Margin" Value="0 15"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="Goldenrod"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                </Trigger>
+
+
+            </Style.Triggers>
+        </Style>
+        <!-- Стили для RadioButton -->
+        <Style TargetType="RadioButton">
+            <Setter Property="FontFamily" Value="Papyrus"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Margin" Value="0 10"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Foreground" Value="Goldenrod"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Стили для StackPanel -->
+        <Style TargetType="StackPanel">
+            <Setter Property="Background" Value="#2D2B1F"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Orientation" Value="Vertical"/>
+            <Setter Property="MaxWidth" Value="1200"/>
+        </Style>
+
+        <!-- Стили для ListView -->
+        <Style TargetType="ListView">
+            <Setter Property="FontFamily" Value="Papyrus"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#4E4A47"/>
+            <Setter Property="BorderBrush" Value="Goldenrod"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Margin" Value="10"/>
+        </Style>
+
+        <!-- Стили для TabItem -->
+        <Style TargetType="TabItem">
+            <Setter Property="FontFamily" Value="Papyrus"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#4E4A47"/>
+            <Setter Property="BorderBrush" Value="Goldenrod"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Padding" Value="10"/>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="Goldenrod"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="LightBlue"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Style for ComboBox -->
+        <Style TargetType="ComboBox">
+            <Setter Property="FontFamily" Value="Papyrus"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Background" Value="DimGray"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Margin" Value="0 10"/>
+        </Style>
+
+        <!-- Style for ComboBoxItem -->
+        <Style TargetType="ComboBoxItem">
+            <Setter Property="FontFamily" Value="Papyrus"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Background" Value="DimGray"/>
+            <Setter Property="Padding" Value="5"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="DimGray"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+
+
+        <!-- Стили для Grid -->
+        <Style TargetType="Grid">
+            <Setter Property="Background" Value="#2D2B1F"/>
+            <Setter Property="Margin" Value="10"/>
+        </Style>
+        <Style x:Key="LightLabelStyle" TargetType="Label">
+            <Setter Property="FontFamily" Value="Papyrus"/>
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Margin" Value="0 15"/>
+        </Style>
+
+    </UserControl.Resources>
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Margin="5,0,0,0" >
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TabControl Height="auto" VerticalAlignment="Top" Margin="0,10,10,0">
+
+                <TabItem Header="Class">
+                    <Grid Height="auto" Margin="0,0,-4,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <ListView ItemsSource="{Binding AvailableClasses}" SelectedItem="{Binding ClickedClass, Mode=TwoWay}" Margin="10,10,10,0" Height="auto" VerticalAlignment="Top">
+                            <ListView.Resources>
+                                <!-- Unselected Item Template -->
+                                <DataTemplate x:Key="DefaultClassTemplate">
+                                    <TextBlock FontSize="16" Margin="5,0" Text="{Binding Name}" />
+                                </DataTemplate>
+
+                                <!-- Selected Item Template -->
+                                <DataTemplate x:Key="SelectedClassTemplate">
+                                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                                        <Grid Background="SlateGray"  Margin="10">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+                                            <Button Content="Choose Class" 
+                                                Command="{Binding DataContext.ChooseClassCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" 
+                                                CommandParameter="{Binding}"
+                                                Background="Goldenrod"
+                                                Foreground="#4E4A47"
+                                                Width="150" Grid.Row="0"
+                                                HorizontalAlignment="Left"/>
+                                            <!-- Class Name -->
+                                            <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="5">
+                                                <TextBlock Text="Class:" FontWeight="Bold"/>
+                                                <TextBlock Text="{Binding Name}" Margin="5,0"/>
+                                            </StackPanel>
+
+                                            <!-- Description -->
+                                            <StackPanel Orientation="Vertical" Grid.Row="2" Margin="5">
+                                                <TextBlock Text="Description:" FontWeight="Bold"/>
+                                                <TextBlock Text="{Binding Description}" TextWrapping="Wrap" Margin="0,5"/>
+                                            </StackPanel>
+
+                                            <!-- Hit Die -->
+                                            <StackPanel Orientation="Horizontal" Grid.Row="3" Margin="5">
+                                                <TextBlock Text="Hit Die:" FontWeight="Bold"/>
+                                                <TextBlock Text="{Binding HitDice.Type}" Margin="5,0"/>
+                                            </StackPanel>
+
+                                            <!-- Saving Throws -->
+                                            <StackPanel Orientation="Horizontal" Grid.Row="4" Margin="5">
+                                                <TextBlock Text="Proficient Saving Throws:" FontWeight="Bold"/>
+                                                <TextBlock Text="{Binding ProficientAbility1}" Margin="5,0"/>
+                                                <TextBlock Text="{Binding ProficientAbility2}" Margin="5,0"/>
+                                            </StackPanel>
+
+                                            <StackPanel Orientation="Horizontal" Grid.Row="5" Margin="5">
+                                                <TextBlock Text="Proficient Skills: "/>
+                                                <ComboBox ItemsSource="{Binding ProficientSkillOptions}" SelectedItem="{Binding DataContext.ClassSkillProf1, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
+                                                <ComboBox ItemsSource="{Binding ProficientSkillOptions}" SelectedItem="{Binding DataContext.ClassSkillProf2, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
+                                            </StackPanel>
+
+                                            <!-- Starting Gold Dice -->
+                                            <StackPanel Orientation="Vertical" Grid.Row="6" Margin="5">
+                                                <TextBlock Text="Starting Gold Dice:" FontWeight="Bold"/>
+                                                <TextBlock Text="{Binding StartingGoldDice.Type}" Margin="0,5"/>
+                                            </StackPanel>
+
+                                            <!-- Has Spells -->
+                                            <StackPanel Orientation="Vertical" Grid.Row="7" Margin="5">
+                                                <TextBlock Text="Does this class have Spells:" FontWeight="Bold"/>
+                                                <TextBlock Text="{Binding HasSpells}" Margin="0,5"/>
+                                            </StackPanel>
+
+                                            <!-- Spellcasting Ability -->
+                                            <StackPanel Orientation="Vertical" Grid.Row="8" Margin="5">
+                                                <TextBlock Text="Spellcasting Ability for this Class:" FontWeight="Bold"/>
+                                                <TextBlock Text="{Binding SpellCastingAbility}" Margin="0,5"/>
+                                            </StackPanel>
+
+                                            <!-- TabControl -->
+                                            <TabControl Grid.Row="9" Margin="5">
+                                                <TabItem Header="Traits">
+                                                    <ListBox ItemsSource="{Binding Traits}">
+                                                        <ListBox.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <StackPanel>
+                                                                    <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
+                                                                    <TextBlock Text="{Binding Description}" TextWrapping="Wrap" FontSize="12" Margin="0,5,0,10"/>
+                                                                </StackPanel>
+                                                            </DataTemplate>
+                                                        </ListBox.ItemTemplate>
+                                                    </ListBox>
+                                                </TabItem>
+
+                                                <TabItem Header="Starting Items">
+                                                    <ListBox ItemsSource="{Binding ClassItems}">
+                                                        <ListBox.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <StackPanel>
+                                                                    <TextBlock Text="{Binding Item.Name}" FontWeight="Bold"/>
+                                                                    <TextBlock Text="{Binding Item.Description}" TextWrapping="Wrap" FontSize="12" Margin="0,5,0,10"/>
+                                                                </StackPanel>
+                                                            </DataTemplate>
+                                                        </ListBox.ItemTemplate>
+                                                    </ListBox>
+                                                </TabItem>
+
+                                                <TabItem Header="Class Spell List">
+                                                    <ListBox ItemsSource="{Binding ClassSpells}">
+                                                        <ListBox.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <StackPanel>
+                                                                    <TextBlock Text="{Binding Spell.Name}" FontWeight="Bold"/>
+                                                                    <TextBlock Text="{Binding Spell.Description}" TextWrapping="Wrap" FontSize="12" Margin="0,5,0,10"/>
+                                                                </StackPanel>
+                                                            </DataTemplate>
+                                                        </ListBox.ItemTemplate>
+                                                    </ListBox>
+                                                </TabItem>
+
+                                                <TabItem Header="Skills">
+                                                    <ListBox ItemsSource="{Binding ProficientSkillOptions}">
+                                                        <ListBox.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock Text="{Binding}"/>
+                                                            </DataTemplate>
+                                                        </ListBox.ItemTemplate>
+                                                    </ListBox>
+                                                </TabItem>
+
+                                                <TabItem Header="Proficiencies">
+                                                    <ListBox ItemsSource="{Binding Proficiencies}">
+                                                        <ListBox.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <TextBlock Text="{Binding Type}"/>
+                                                                    <TextBlock Text="{Binding Name}" Margin="5,0"/>
+                                                                </StackPanel>
+                                                            </DataTemplate>
+                                                        </ListBox.ItemTemplate>
+                                                    </ListBox>
+                                                </TabItem>
+                                            </TabControl>
+                                        </Grid>
+                                    </ScrollViewer>
+                                </DataTemplate>
+                            </ListView.Resources>
+
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <!-- Default Style for all items -->
+                                    <Setter Property="ContentTemplate" Value="{StaticResource DefaultClassTemplate}" />
+                                    <Style.Triggers>
+                                        <!-- Trigger for selected item -->
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="ContentTemplate" Value="{StaticResource SelectedClassTemplate}" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                        </ListView>
+                    </Grid>
+                </TabItem>
+
+                <TabItem Header="Species">
+                    <Grid Height="auto" Margin="0,0,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Margin="0,10,10,10">
+                            <ListView ItemsSource="{Binding AvailableSpecies}" SelectedItem="{Binding ClickedSpecies, Mode=TwoWay}" Margin="10,0,1,58">
+                                <ListView.Resources>
+                                    <!-- Unselected Item Template -->
+                                    <DataTemplate x:Key="DefaultSpeciesTemplate">
+                                        <TextBlock FontSize="14" Margin="5,0" Text="{Binding Name}" />
+                                    </DataTemplate>
+
+                                    <!-- Selected Item Template -->
+                                    <DataTemplate x:Key="SelectedSpeciesTemplate">
+                                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                                            <Grid Background="#2D2B1F" Margin="10" MaxWidth="1200">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
+                                                <Button Content="Choose Species" Grid.Row="0" HorizontalAlignment="Left"
+                                                Command="{Binding DataContext.ChooseSpeciesCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" 
+                                                CommandParameter="{Binding}"/>
+                                                <!-- Species Name -->
+                                                <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="5">
+                                                    <TextBlock Text="Species:" FontWeight="Bold"/>
+                                                    <TextBlock Text="{Binding Name}" Margin="5,0"/>
+                                                </StackPanel>
+
+                                                <!-- Description -->
+                                                <StackPanel Orientation="Vertical" Grid.Row="2" Margin="5">
+                                                    <TextBlock Text="Description:" FontWeight="Bold"/>
+                                                    <TextBlock Text="{Binding Description}" Margin="0,5"/>
+                                                </StackPanel>
+
+                                                <!-- Size -->
+                                                <StackPanel Orientation="Horizontal" Grid.Row="3" Margin="5">
+                                                    <TextBlock Text="Size:" FontWeight="Bold"/>
+                                                    <TextBlock Text="{Binding Size}" Margin="5,0"/>
+                                                </StackPanel>
+
+                                                <!-- Speed -->
+                                                <StackPanel Orientation="Horizontal" Grid.Row="4" Margin="5">
+                                                    <TextBlock Text="Speed (ft):" FontWeight="Bold"/>
+                                                    <TextBlock Text="{Binding Speed}" Margin="5,0"/>
+                                                </StackPanel>
+
+                                                <!-- Languages -->
+                                                <StackPanel Orientation="Vertical" Grid.Row="5" Margin="5">
+                                                    <TextBlock Text="Languages:" FontWeight="Bold"/>
+                                                    <ItemsControl ItemsSource="{Binding SpeciesLanguages}">
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock Text="{Binding}" Margin="0,5"/>
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+                                                </StackPanel>
+
+                                                <!-- Damage Resistances -->
+                                                <StackPanel Orientation="Vertical" Grid.Row="6" Margin="5">
+                                                    <TextBlock Text="Damage Resistances:" FontWeight="Bold"/>
+                                                    <ItemsControl ItemsSource="{Binding DamageResistances}">
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock Text="{Binding}" Margin="0,5"/>
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+                                                </StackPanel>
+
+                                                <!-- Darkvision -->
+                                                <StackPanel Orientation="Horizontal" Grid.Row="7" Margin="5">
+                                                    <TextBlock Text="Darkvision Range:" FontWeight="Bold"/>
+                                                    <TextBlock Text="{Binding Darkvision}" Margin="5,0"/>
+                                                </StackPanel>
+
+                                                <!-- Traits -->
+                                                <TabControl Grid.Row="8" Margin="5">
+                                                    <TabItem Header="Traits">
+                                                        <ListBox ItemsSource="{Binding Traits}">
+                                                            <ListBox.ItemTemplate>
+                                                                <DataTemplate>
+                                                                    <StackPanel>
+                                                                        <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
+                                                                        <TextBlock Text="{Binding Description}" TextWrapping="Wrap" FontSize="12" Margin="0,5,0,10"/>
+                                                                    </StackPanel>
+                                                                </DataTemplate>
+                                                            </ListBox.ItemTemplate>
+                                                        </ListBox>
+                                                    </TabItem>
+                                                </TabControl>
+                                            </Grid>
+                                        </ScrollViewer>
+                                    </DataTemplate>
+                                </ListView.Resources>
+                                <ListView.ItemContainerStyle>
+                                    <Style TargetType="ListViewItem">
+                                        <!-- Default Style for all items -->
+                                        <Setter Property="ContentTemplate" Value="{StaticResource DefaultSpeciesTemplate}" />
+                                        <Style.Triggers>
+                                            <!-- Trigger for selected item -->
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter Property="ContentTemplate" Value="{StaticResource SelectedSpeciesTemplate}" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ListView.ItemContainerStyle>
+                            </ListView>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Ability Scores">
+                    <Grid Height="auto" Margin="0,10,0,10" Width="auto">
+                        <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="120"></ColumnDefinition>
+                            <ColumnDefinition Width="120"></ColumnDefinition>
+                            <ColumnDefinition Width="120"></ColumnDefinition>
+                            <ColumnDefinition Width="120"></ColumnDefinition>
+                            <ColumnDefinition Width="120"></ColumnDefinition>
+                            <ColumnDefinition Width="120"></ColumnDefinition>
+                            <ColumnDefinition Width="120"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="3" Foreground="Gainsboro" Text="Choose your ability scores" Margin="10,20,0,10" Width="auto"/>
+                        <TextBlock Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="6" Foreground="Gainsboro" Text="Enter values manually, choose from standard array or roll random values" Width="auto"/>
+                        <TextBlock Text="Strength" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"/>
+                        <ComboBox Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="2" IsEditable="True"  Text="{Binding Strength, Mode=TwoWay}" Margin="0,10,0,10" HorizontalAlignment="Left" Width="auto">
+                            <ComboBox.ItemsSource>
+                                <x:Array Type="{x:Type sys:Int32}">
+                                    <sys:Int32>15</sys:Int32>
+                                    <sys:Int32>14</sys:Int32>
+                                    <sys:Int32>13</sys:Int32>
+                                    <sys:Int32>12</sys:Int32>
+                                    <sys:Int32>10</sys:Int32>
+                                    <sys:Int32>8</sys:Int32>
+                                </x:Array>
+                            </ComboBox.ItemsSource>
+                        </ComboBox>
+                        <Button Grid.Row="2" Grid.Column="4" Content="Roll" Foreground="Gainsboro" 
+                            Command="{Binding RollAbilityCommand}" 
+                            CommandParameter="Strength" />
+
+                        <TextBlock Text="Dexterity" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"/>
+                        <ComboBox Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="3" IsEditable="True"  Text="{Binding Dexterity, Mode=TwoWay}" HorizontalAlignment="Left" Width="auto">
+                            <ComboBox.ItemsSource>
+                                <x:Array Type="{x:Type sys:Int32}">
+                                    <sys:Int32>15</sys:Int32>
+                                    <sys:Int32>14</sys:Int32>
+                                    <sys:Int32>13</sys:Int32>
+                                    <sys:Int32>12</sys:Int32>
+                                    <sys:Int32>10</sys:Int32>
+                                    <sys:Int32>8</sys:Int32>
+                                </x:Array>
+                            </ComboBox.ItemsSource>
+                        </ComboBox>
+                        <Button Grid.Row="3" Grid.Column="4" Content="Roll" Foreground="Gainsboro" 
+                            Command="{Binding RollAbilityCommand}" 
+                            CommandParameter="Dexterity" />
+
+                        <TextBlock Text="Constitution" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Padding="10,25,10,5"/>
+                        <ComboBox Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="4" IsEditable="True"
+                                  Text="{Binding Constitution, Mode=TwoWay}" HorizontalAlignment="Left" Width="auto">
+                            <ComboBox.ItemsSource>
+                                <x:Array Type="{x:Type sys:Int32}">
+                                    <sys:Int32>15</sys:Int32>
+                                    <sys:Int32>14</sys:Int32>
+                                    <sys:Int32>13</sys:Int32>
+                                    <sys:Int32>12</sys:Int32>
+                                    <sys:Int32>10</sys:Int32>
+                                    <sys:Int32>8</sys:Int32>
+                                </x:Array>
+                            </ComboBox.ItemsSource>
+                        </ComboBox>
+                        <Button Grid.Row="4" Grid.Column="4" Content="Roll" Foreground="Gainsboro" 
+                            Command="{Binding RollAbilityCommand}" 
+                            CommandParameter="Constitution"  />
+
+                        <TextBlock Text="Intelligence" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"  Padding="10,25,10,5" />
+                        <ComboBox Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="5" IsEditable="True"
+                                  Text="{Binding Intelligence, Mode=TwoWay}" HorizontalAlignment="Left" Width="auto">
+                            <ComboBox.ItemsSource>
+                                <x:Array Type="{x:Type sys:Int32}">
+                                    <sys:Int32>15</sys:Int32>
+                                    <sys:Int32>14</sys:Int32>
+                                    <sys:Int32>13</sys:Int32>
+                                    <sys:Int32>12</sys:Int32>
+                                    <sys:Int32>10</sys:Int32>
+                                    <sys:Int32>8</sys:Int32>
+                                </x:Array>
+                            </ComboBox.ItemsSource>
+                        </ComboBox>
+                        <Button Grid.Row="5" Grid.Column="4" Content="Roll" Foreground="Gainsboro" 
+                            Command="{Binding RollAbilityCommand}" 
+                            CommandParameter="Intelligence" />
+
+                        <TextBlock Text="Wisdom" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2"/>
+                        <ComboBox Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="6" IsEditable="True"  Text="{Binding Wisdom, Mode=TwoWay}" HorizontalAlignment="Left" Width="auto">
+                            <ComboBox.ItemsSource>
+                                <x:Array Type="{x:Type sys:Int32}">
+                                    <sys:Int32>15</sys:Int32>
+                                    <sys:Int32>14</sys:Int32>
+                                    <sys:Int32>13</sys:Int32>
+                                    <sys:Int32>12</sys:Int32>
+                                    <sys:Int32>10</sys:Int32>
+                                    <sys:Int32>8</sys:Int32>
+                                </x:Array>
+                            </ComboBox.ItemsSource>
+                        </ComboBox>
+                        <Button Grid.Row="6" Grid.Column="4" Content="Roll" Foreground="Gainsboro" 
+                            Command="{Binding RollAbilityCommand}" 
+                            CommandParameter="Wisdom"  />
+
+                        <TextBlock Text="Charisma" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2"/>
+                        <ComboBox Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="7" IsEditable="True"  Text="{Binding Charisma, Mode=TwoWay}"  HorizontalAlignment="Left" Width="auto">
+                            <ComboBox.ItemsSource>
+                                <x:Array Type="{x:Type sys:Int32}">
+                                    <sys:Int32>15</sys:Int32>
+                                    <sys:Int32>14</sys:Int32>
+                                    <sys:Int32>13</sys:Int32>
+                                    <sys:Int32>12</sys:Int32>
+                                    <sys:Int32>10</sys:Int32>
+                                    <sys:Int32>8</sys:Int32>
+                                </x:Array>
+                            </ComboBox.ItemsSource>
+                        </ComboBox>
+                        <Button Grid.Row="7" Grid.Column="4" Content="Roll" Foreground="Gainsboro" 
+                            Command="{Binding RollAbilityCommand}" 
+                            CommandParameter="Charisma"  />
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Background">
+                    <Grid Height="auto">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                            <TextBlock Text="Your Character Name is?"/>
+                            <TextBox Text="{Binding CharacterName}"/>
+                            <Label Content="Choose Method to determine Background" 
+                        HorizontalAlignment="Center" />
+                            <RadioButton Name="DbBack" GroupName="Back" Height="30">Existing Background</RadioButton>
+                            <RadioButton Name="CustomBack" GroupName="Back" Height="30" >Custom Background</RadioButton>
+                        </StackPanel>
+                        <!-- Background Title -->
+                        <TextBlock Text="Background Title" Grid.Row="1" Grid.Column="0" Margin="5" 
+                                   Visibility="{Binding IsChecked, ElementName=CustomBack, Converter={StaticResource convVisibility}}" />
+                        <TextBox Text="{Binding CustomBackground.Name}" Grid.Row="1" Grid.Column="1" Margin="5" 
+                                   Visibility="{Binding IsChecked, ElementName=CustomBack, Converter={StaticResource convVisibility}}" />
+
+                        <!-- Background Description -->
+                        <TextBlock Text="Background Description" Grid.Row="2" Grid.Column="0" Margin="5" 
+           Visibility="{Binding IsChecked, ElementName=CustomBack, Converter={StaticResource convVisibility}}" />
+                        <TextBox Text="{Binding CustomBackground.Description}" Grid.Row="2" Grid.Column="1" Margin="5" 
+         Visibility="{Binding IsChecked, ElementName=CustomBack, Converter={StaticResource convVisibility}}" />
+
+                        <!-- Proficient Skill 1 -->
+                        <TextBlock Text="Proficient Skills" Grid.Row="3" Grid.Column="0" Margin="5" 
+           Visibility="{Binding IsChecked, ElementName=CustomBack, Converter={StaticResource convVisibility}}" />
+                        <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="1" Margin="5"
+            Visibility="{Binding IsChecked, ElementName=CustomBack, Converter={StaticResource convVisibility}}">
+                            <ComboBox ItemsSource="{Binding Source={StaticResource SkillsEnumValues}}" 
+              SelectedItem="{Binding CustomBackground.SkillProf1}" 
+              Margin="5" />
+                            <ComboBox ItemsSource="{Binding Source={StaticResource SkillsEnumValues}}" 
+              SelectedItem="{Binding CustomBackground.SkillProf2}" 
+              Margin="5" />
+                        </StackPanel>
+
+                        <!-- Background Language -->
+                        <TextBlock Text="Background Language" Grid.Row="4" Grid.Column="0" Margin="5" 
+           Visibility="{Binding IsChecked, ElementName=CustomBack, Converter={StaticResource convVisibility}}" />
+                        <ComboBox ItemsSource="{Binding Source={StaticResource LanguagesEnumValues}}" 
+          SelectedItem="{Binding CustomBackground.BackgroundLanguage}" 
+          Grid.Row="4" Grid.Column="1" Margin="5" 
+          Visibility="{Binding IsChecked, ElementName=CustomBack, Converter={StaticResource convVisibility}}" />
+
+                        <!-- Personality Trait -->
+                        <TextBlock Text="Personality Trait" Grid.Row="5" Grid.Column="0" Margin="5" 
+           Visibility="{Binding IsChecked, ElementName=CustomBack, Converter={StaticResource convVisibility}}" />
+                        <TextBox Text="{Binding CustomBackground.PersonalityTrait}" Grid.Row="5" Grid.Column="1" Margin="5" 
+         Visibility="{Binding IsChecked, ElementName=CustomBack, Converter={StaticResource convVisibility}}" />
+
+                        <!-- Ideal -->
+                        <TextBlock Text="Ideal" Grid.Row="6" Grid.Column="0" Margin="5" 
+           Visibility="{Binding IsChecked, ElementName=CustomBack, Converter={StaticResource convVisibility}}" />
+                        <TextBox Text="{Binding CustomBackground.Ideal}" Grid.Row="6" Grid.Column="1" Margin="5" 
+         Visibility="{Binding IsChecked, ElementName=CustomBack, Converter={StaticResource convVisibility}}" />
+
+                        <!-- Flaw -->
+                        <TextBlock Text="Flaw" Grid.Row="7" Grid.Column="0" Margin="5" 
+           Visibility="{Binding IsChecked, ElementName=CustomBack, Converter={StaticResource convVisibility}}" />
+                        <TextBox Text="{Binding CustomBackground.Flaw}" Grid.Row="7" Grid.Column="1" Margin="5" 
+         Visibility="{Binding IsChecked, ElementName=CustomBack, Converter={StaticResource convVisibility}}" />
+
+                        <!-- Bond -->
+                        <TextBlock Text="Bond" Grid.Row="8" Grid.Column="0" Margin="5" 
+           Visibility="{Binding IsChecked, ElementName=CustomBack, Converter={StaticResource convVisibility}}" />
+                        <TextBox Text="{Binding CustomBackground.Bond}" Grid.Row="8" Grid.Column="1" Margin="5" 
+         Visibility="{Binding IsChecked, ElementName=CustomBack, Converter={StaticResource convVisibility}}" />
+
+                        <TextBlock Text="Background Equipment" Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2"
+           Visibility="{Binding IsChecked, ElementName=CustomBack, Converter={StaticResource convVisibility}}" />
+                        <ListView ItemsSource="{Binding AllItems}"
+          SelectedItem="{Binding SelectedAvailableItem, Mode=TwoWay}"
+          SelectionMode="Single"
+          Margin="10"
+          Grid.Row="10" Grid.Column="0"
+          Visibility="{Binding IsChecked, ElementName=CustomBack, Converter={StaticResource convVisibility}}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                        <StackPanel Orientation="Horizontal" Margin="10" Grid.Row="10" Grid.Column="1"
+            Visibility="{Binding IsChecked, ElementName=CustomBack, Converter={StaticResource convVisibility}}">
+                            <Button Content="Move" Command="{Binding MoveToSelectedCommand}" Foreground="Gainsboro" Margin="10,0" />
+                            <Button Content="Remove" Command="{Binding RemoveFromSelectedCommand}" Foreground="Gainsboro" Margin="10,0" />
+                            <ListView ItemsSource="{Binding SelectedItems}"
+              SelectedItem="{Binding SelectedSelectedItem, Mode=TwoWay}"
+              SelectionMode="Single">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Name}" FontWeight="Bold" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </StackPanel>
+
+                        <TextBlock Text="Background Trait" Grid.Row="11" Grid.Column="0"
+           Visibility="{Binding IsChecked, ElementName=CustomBack, Converter={StaticResource convVisibility}}" />
+                        <ComboBox ItemsSource="{Binding AllTraits}" 
+          SelectedItem="{Binding CustomBackground.BackgroundTrait}" 
+          Grid.Row="11" Grid.Column="1" Grid.ColumnSpan="2" Margin="10,10,10,10" DisplayMemberPath="Name"
+          Visibility="{Binding IsChecked, ElementName=CustomBack, Converter={StaticResource convVisibility}}" />
+
+
+
+                        <ListView Visibility="{Binding IsChecked, ElementName=DbBack, Converter={StaticResource convVisibility}}" 
+          ItemsSource="{Binding AvailableBackgrounds}" 
+          SelectedItem="{Binding ClickedBackground, Mode=TwoWay}" 
+          Margin="10" VerticalAlignment="Stretch" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                            <ListView.Resources>
+                                <!-- Unselected Item Template -->
+                                <DataTemplate x:Key="DefaultBackgroundTemplate">
+                                    <TextBlock FontSize="16" Margin="5,0" Text="{Binding Name}" />
+                                </DataTemplate>
+
+                                <!-- Selected Item Template -->
+                                <DataTemplate x:Key="SelectedBackgroundTemplate">
+                                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                        <Grid Background="#2D2B1F" Margin="10" MinWidth="500" MaxWidth="1200">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+                                            <StackPanel Orientation="Vertical"  Grid.Row="0">
+                                                <!-- Choose Background Button -->
+                                                <TextBlock Text="Character Name:"/>
+                                                <TextBox Text="{Binding CharacterName}"/>
+                                                <Button Content="Choose Background" 
+                                            Command="{Binding DataContext.SaveExistingBackgroundCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" 
+                                            CommandParameter="{Binding}"
+                                            Background="Goldenrod"
+                                            Foreground="#4E4A47"
+                                            Width="auto"
+                                            HorizontalAlignment="Left"
+                                            Margin="0,10"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="5">
+                                                <TextBlock Text="Name:" FontWeight="Bold"/>
+                                                <TextBlock Text="{Binding Name}" Margin="5,0"/>
+                                            </StackPanel>
+
+                                            <!-- Description -->
+                                            <StackPanel Orientation="Vertical" Grid.Row="2" Margin="5" >
+                                                <TextBlock Text="Description:" FontWeight="Bold"/>
+                                                <TextBlock Text="{Binding Description}" ClipToBounds="False" TextWrapping="WrapWithOverflow" Margin="0,5"/>
+                                            </StackPanel>
+
+                                            <!-- Skill Proficiencies -->
+                                            <StackPanel Orientation="Horizontal" Grid.Row="3" Margin="5">
+                                                <TextBlock Text="Skill Proficiencies:" FontWeight="Bold"/>
+                                                <TextBlock Text="{Binding SkillProf1}" Margin="10,15"/>
+                                                <TextBlock Text="{Binding SkillProf2}" Margin="10,15"/>
+                                            </StackPanel>
+
+                                            <!-- Language -->
+                                            <StackPanel Orientation="Horizontal" Grid.Row="4" Margin="5">
+                                                <TextBlock Text="Language:" FontWeight="Bold"/>
+                                                <TextBlock Text="{Binding BackgroundLanguage}" Margin="10,15"/>
+                                            </StackPanel>
+
+                                            <!-- Personality -->
+                                            <StackPanel Orientation="Horizontal" Grid.Row="5" Margin="5">
+                                                <TextBlock Text="Personality Trait:" FontWeight="Bold"/>
+                                                <TextBlock Text="{Binding PersonalityTrait}" Margin="10,15"/>
+                                            </StackPanel>
+
+                                            <!-- Ideal -->
+                                            <StackPanel Orientation="Horizontal" Grid.Row="6" Margin="5">
+                                                <TextBlock Text="Ideal:" FontWeight="Bold"/>
+                                                <TextBlock Text="{Binding Ideal}" Margin="10,15"/>
+                                            </StackPanel>
+
+                                            <!-- Bond -->
+                                            <StackPanel Orientation="Horizontal" Grid.Row="7" Margin="5">
+                                                <TextBlock Text="Bond:" FontWeight="Bold"/>
+                                                <TextBlock Text="{Binding Bond}" Margin="10,15"/>
+                                            </StackPanel>
+
+                                            <!-- Flaw -->
+                                            <StackPanel Orientation="Horizontal" Grid.Row="8" Margin="5">
+                                                <TextBlock Text="Flaw:" FontWeight="Bold"/>
+                                                <TextBlock Text="{Binding Flaw}" Margin="10,15"/>
+                                            </StackPanel>
+
+                                            <!-- Background Trait -->
+                                            <StackPanel Orientation="Vertical" Grid.Row="9" Margin="5">
+                                                <TextBlock Text="{Binding BackgroundTrait.Name}" FontWeight="Bold"/>
+                                                <TextBlock Text="{Binding BackgroundTrait.Description}" TextWrapping="Wrap" FontSize="12" Margin="0,5,0,10"/>
+                                            </StackPanel>
+
+                                            <!-- Background Items -->
+                                            <ListBox ItemsSource="{Binding BackgroundItems}" Grid.Row="10" Margin="5">
+                                                <ListBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <StackPanel>
+                                                            <TextBlock Text="{Binding Item.Name}" FontWeight="Bold"/>
+                                                            <TextBlock Text="{Binding Item.Description}" TextWrapping="Wrap" FontSize="12" Margin="0,5,0,10"/>
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </ListBox.ItemTemplate>
+                                            </ListBox>
+                                        </Grid>
+                                    </ScrollViewer>
+                                </DataTemplate>
+                            </ListView.Resources>
+
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <!-- Default Style for all items -->
+                                    <Setter Property="ContentTemplate" Value="{StaticResource DefaultBackgroundTemplate}" />
+                                    <Style.Triggers>
+                                        <!-- Trigger for selected item -->
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="ContentTemplate" Value="{StaticResource SelectedBackgroundTemplate}" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                        </ListView>
+
+
+
+
+
+                        <!--<Button Content="Save Background" Visibility="{Binding IsChecked, ElementName=DbBack, Converter={StaticResource convVisibility}}"
+                        Command="{Binding SaveExistingBackgroundCommand}"
+                        Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="2" 
+                        HorizontalAlignment="Left" Margin="0,0,0,0" Width="240" Foreground="Gainsboro"/>-->
+                        <Button Content="Save Background" Visibility="{Binding IsChecked, ElementName=CustomBack, Converter={StaticResource convVisibility}}"
+                        Command="{Binding SaveCustomBackgroundCommand}"
+                        Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="2" 
+                        HorizontalAlignment="Left" Margin="0,0,0,0" Width="240" Foreground="Gainsboro"/>
+                    </Grid>
+                </TabItem>
+
+                <TabItem Header="Starting Equipment">
+                    <Grid Margin="0,0,0,0" Height="auto" Width="auto">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="127*"/>
+                            <ColumnDefinition Width="43*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel  Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Vertical">
+                            <Label Content="Choose Method to determine Starting Equipment" 
+       HorizontalAlignment="Center" Margin="0,15,0,15" Width="535"/>
+                            <RadioButton Name="ClassBack" GroupName="Equip" Height="30">Class+Background</RadioButton>
+                            <RadioButton Name="StartGold" GroupName="Equip" Height="30">Starting Gold</RadioButton>
+                        </StackPanel>
+                        <!-- Class + Background Visibility -->
+                        <TextBlock Grid.Row="2" Grid.Column="0"
+                   Visibility="{Binding IsChecked, ElementName=ClassBack, Converter={StaticResource convVisibility}}" Margin="0,15,0,15" Width="0"  Foreground="White">
+            Class + Background
+                        </TextBlock>
+
+                        <ListView  Visibility="{Binding IsChecked, ElementName=ClassBack, Converter={StaticResource convVisibility}}" 
+                                   ItemsSource="{Binding ChosenClass.ClassItems}" Grid.Row="3" Grid.Column="0">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Item.Name}"/>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                        <ListView Visibility="{Binding IsChecked, ElementName=ClassBack, Converter={StaticResource convVisibility}}" 
+                                  ItemsSource="{Binding ChosenBackground.BackgroundItems}" Grid.Row="3" Grid.Column="1">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Item.Name}"/>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+
+                        <TextBlock   Visibility="{Binding IsChecked, ElementName=StartGold, Converter={StaticResource convVisibility}}"
+                                     Text="The Starting Gold for your Character would be: " Grid.Row="4" Grid.Column="0"/>
+                        <TextBlock   Visibility="{Binding IsChecked, ElementName=StartGold, Converter={StaticResource convVisibility}}"
+                                     Text="{Binding ChosenClass.StartingGold}" Grid.Row="4"  Grid.Column="1"/>
+
+                        <!-- Starting Gold Visibility -->
+                        <TextBlock Grid.Row="2" Grid.Column="0"
+                   Visibility="{Binding IsChecked, ElementName=StartGold, Converter={StaticResource convVisibility}}" Margin="0,15,0,15" Width="0" Foreground="White" >
+            Starting Gold
+                        </TextBlock>
+
+                    
+                        <!-- Create Character Button -->
+                        <Button Content="Create Character" Grid.Column="0" Grid.Row="4" 
+        Command="{Binding CreateCharacterCommand}" Width="NaN" Foreground="Gainsboro" Margin="298,45,36,95"/>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

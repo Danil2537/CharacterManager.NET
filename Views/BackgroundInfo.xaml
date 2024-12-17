@@ -1,0 +1,124 @@
+﻿<UserControl x:Class="CharacterManager.Views.BackgroundInfo"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" xmlns:sys="clr-namespace:System;assembly=netstandard"
+             xmlns:models="clr-namespace:CharacterManager.Models">
+    <UserControl.Resources>
+        <ObjectDataProvider x:Key="SkillsEnumValues" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="models:Skill"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="LanguagesEnumValues" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="models:Language"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
+        <!-- General Styles -->
+        <Style TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Papyrus"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="Gainsboro"/>
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="FontFamily" Value="Papyrus"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#4E4A47"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Width" Value="160"/>
+            <Setter Property="BorderBrush" Value="Goldenrod"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Margin" Value="5"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="Goldenrod"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <Grid Background="#2D2B1F" Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Background Name -->
+            <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="5">
+                <TextBlock Text="Name:" FontWeight="Bold"/>
+                <TextBlock Text="{Binding Name}" Margin="5,0"/>
+            </StackPanel>
+
+            <!-- Description -->
+            <StackPanel Orientation="Vertical" Grid.Row="1" Margin="5">
+                <TextBlock Text="Description:" FontWeight="Bold"/>
+                <TextBlock Text="{Binding Description}" TextWrapping="Wrap" Margin="0,5"/>
+            </StackPanel>
+
+            <!-- Skill Proficiencies -->
+            <StackPanel Orientation="Horizontal" Grid.Row="2" Margin="5">
+                <TextBlock Text="Skill Proficiencies:" FontWeight="Bold"/>
+                <TextBlock Text="{Binding SkillProf1}" Margin="5,0"/>
+                <TextBlock Text="{Binding SkillProf2}" Margin="5,0"/>
+            </StackPanel>
+
+            <!-- Language -->
+            <StackPanel Orientation="Horizontal" Grid.Row="3" Margin="5">
+                <TextBlock Text="Language:" FontWeight="Bold"/>
+                <TextBlock Text="{Binding BackgroundLanguage}" Margin="5,0"/>
+            </StackPanel>
+
+            <!-- Personality -->
+            <StackPanel Orientation="Horizontal" Grid.Row="4" Margin="5">
+                <TextBlock Text="Personality Trait:" FontWeight="Bold"/>
+                <TextBlock Text="{Binding PersonalityTrait}" Margin="5,0"/>
+            </StackPanel>
+
+            <!-- Ideal -->
+            <StackPanel Orientation="Horizontal" Grid.Row="5" Margin="5">
+                <TextBlock Text="Ideal:" FontWeight="Bold"/>
+                <TextBlock Text="{Binding Ideal}" Margin="5,0"/>
+            </StackPanel>
+
+            <!-- Bond -->
+            <StackPanel Orientation="Horizontal" Grid.Row="6" Margin="5">
+                <TextBlock Text="Bond:" FontWeight="Bold"/>
+                <TextBlock Text="{Binding Bond}" Margin="5,0"/>
+            </StackPanel>
+
+            <!-- Flaw -->
+            <StackPanel Orientation="Horizontal" Grid.Row="7" Margin="5">
+                <TextBlock Text="Flaw:" FontWeight="Bold"/>
+                <TextBlock Text="{Binding Flaw}" Margin="5,0"/>
+            </StackPanel>
+
+      
+            <TextBlock Text="{Binding BackgroundTrait.Name}" FontWeight="Bold"/>
+            <TextBlock Text="{Binding BackgroundTrait.Description}" TextWrapping="Wrap" FontSize="12" Margin="0,5,0,10"/>
+
+                <ListBox ItemsSource="{Binding BackgroundItems}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Item.Name}" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding Item.Description}" TextWrapping="Wrap" FontSize="12" Margin="0,5,0,10"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+       
+        </Grid>
+    </ScrollViewer>
+</UserControl>

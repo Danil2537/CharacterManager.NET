@@ -1,0 +1,130 @@
+﻿<UserControl x:Class="CharacterManager.Views.SpeciesInfo"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" xmlns:sys="clr-namespace:System;assembly=netstandard"
+             xmlns:models="clr-namespace:CharacterManager.Models">
+    <UserControl.Resources>
+        <!-- General Styles -->
+        <Style TargetType="Label">
+            <Setter Property="FontFamily" Value="Papyrus"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Foreground" Value="Gainsboro"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0 10"/>
+        </Style>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Papyrus"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="Gainsboro"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="ClipToBounds" Value="False"/>
+            <Setter Property="MaxWidth" Value="1200"/>
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="FontFamily" Value="Papyrus"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#4E4A47"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Width" Value="160"/>
+            <Setter Property="BorderBrush" Value="Goldenrod"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Margin" Value="5"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="Goldenrod"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <Grid Background="#2D2B1F" Margin="10" MaxWidth="1200">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Species Name -->
+            <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="5">
+                <TextBlock Text="Species:" FontWeight="Bold"/>
+                <TextBlock Text="{Binding Name}" Margin="5,0"/>
+            </StackPanel>
+
+            <!-- Description -->
+            <StackPanel Orientation="Vertical" Grid.Row="1" Margin="5">
+                <TextBlock Text="Description:" FontWeight="Bold"/>
+                <TextBlock Text="{Binding Description}" Margin="0,5"/>
+            </StackPanel>
+
+            <!-- Size -->
+            <StackPanel Orientation="Horizontal" Grid.Row="2" Margin="5">
+                <TextBlock Text="Size:" FontWeight="Bold"/>
+                <TextBlock Text="{Binding Size}" Margin="5,0"/>
+            </StackPanel>
+
+            <!-- Speed -->
+            <StackPanel Orientation="Horizontal" Grid.Row="3" Margin="5">
+                <TextBlock Text="Speed (ft):" FontWeight="Bold"/>
+                <TextBlock Text="{Binding Speed}" Margin="5,0"/>
+            </StackPanel>
+
+            <!-- Languages -->
+            <StackPanel Orientation="Vertical" Grid.Row="4" Margin="5">
+                <TextBlock Text="Languages:" FontWeight="Bold"/>
+                <ItemsControl ItemsSource="{Binding SpeciesLanguages}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" Margin="0,5"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+
+            <!-- Damage Resistances -->
+            <StackPanel Orientation="Vertical" Grid.Row="5" Margin="5">
+                <TextBlock Text="Damage Resistances:" FontWeight="Bold"/>
+                <ItemsControl ItemsSource="{Binding DamageResistances}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" Margin="0,5"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+
+            <!-- Darkvision -->
+            <StackPanel Orientation="Horizontal" Grid.Row="6" Margin="5">
+                <TextBlock Text="Darkvision Range:" FontWeight="Bold"/>
+                <TextBlock Text="{Binding Darkvision}" Margin="5,0"/>
+            </StackPanel>
+
+            <!-- Traits -->
+            <TabControl Grid.Row="7" Margin="5">
+                <TabItem Header="Traits">
+                    <ListBox ItemsSource="{Binding Traits}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding Description}" TextWrapping="Wrap" FontSize="12" Margin="0,5,0,10"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </ScrollViewer>
+</UserControl>
